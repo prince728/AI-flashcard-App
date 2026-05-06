@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const flashCardSchema = mongoose.connect({
+const flashCardSchema = mongoose.Schema({
     question: {
         type: String,
         required: true
@@ -22,4 +22,4 @@ const flashCardSchema = mongoose.connect({
 
 
 const flashCardModel = mongoose.model("Flashcard", flashCardSchema);
-module.exports =flashCardModel
+module.exports =flashCardModel;

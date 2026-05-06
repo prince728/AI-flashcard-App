@@ -1,5 +1,5 @@
 const express = require('express');
-const flashCardController = require('../controllers/flashcard.controller');
+const flashCardController =  require('../controllers/flashcard.controller')
 
 const flashCardRouter = express.Router();
 
