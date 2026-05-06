@@ -19,3 +19,7 @@ const flashCardSchema = mongoose.connect({
 }, {
     timestamp: true
 })
+
+
+const flashCardModel = mongoose.model("Flashcard", flashCardSchema);
+module.exports =flashCardModel
