@@ -1,8 +1,22 @@
 const flashCardModel = require('../models/flashcard.model');
 const express = require('express');
+const AiService = require('../services/AIflashCard.service')
 
 const generateFlashCard = async (req, res) => {
-    res.send('generate')
+    try {
+        const { text } = req.body;
+
+        if (!text) {
+            return res.status(400).json({ message: "No text provided" });
+        }
+
+        const flashCards = await AiService(text);
+        return res.status(200).json(flashCards);
+
+    } catch (error) {
+        console.log("Error generating flashcards:", error);
+        return res.status(500).json({ message: "Failed to generate flashcards" });
+    }
 
 }
 
@@ -48,15 +62,15 @@ const saveFlashCard = async (req, res) => {
             question,
             answer,
             subject,
-            userId:req.user
+            userId: req.user
         });
 
         return res.status(201).json({
-            message:"flashcard save successfully",
-            flashcard:{
-                question:flashcard.question,
-                answer:flashcard.answer,
-                subject:flashcard.subject
+            message: "flashcard save successfully",
+            flashcard: {
+                question: flashcard.question,
+                answer: flashcard.answer,
+                subject: flashcard.subject
             }
         })
 
@@ -69,7 +83,19 @@ const saveFlashCard = async (req, res) => {
 
 
 const getAllFlashCard = async (req, res) => {
-    res.send('get all')
+    try {
+        const userId = req.user;
+
+        const flashcards = await flashCardModel.find({ userId: userId });
+
+        return res.status(200).json({
+            message: "Flashcards retrieved successfully",
+            flashcards: flashcards
+        })
+    } catch (error) {
+        console.error("Internal server error:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 }
 
 

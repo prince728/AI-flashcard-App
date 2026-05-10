@@ -11,6 +11,7 @@ const flashCardSchema = mongoose.Schema({
     },
     subject: {
         type: String,
+        default: "general"
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
