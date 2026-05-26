@@ -5,6 +5,8 @@ import HomePage from "../pages/HomePage";
 import ProfilePage from "../pages/profilePage";
 import AboutPage from "../pages/AboutPage";
 import FlashCardPage from "../pages/FlashCardPage";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
 
 
 const router = createBrowserRouter([
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
     path: "/flashcards",
     element: <FlashCardPage />,
   },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
+  }
 ]);
 
 export default router;

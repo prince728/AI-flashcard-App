@@ -13,6 +13,7 @@ async function AiService(text) {
   - Each flashcard must have a "question" and an "answer".
   - Keep questions short and clear.
   - Answers should be concise but informative.
+  - Subject should be a school/college subject if possible, otherwise "general".
   - Do not include extra commentary, only return JSON.
 
   Text:
@@ -21,7 +22,7 @@ async function AiService(text) {
   Output format:
   {
     "flashcards": [
-      { "question": "What is ...?", "answer": "..." }
+      { "question": "What is ...?", "answer": "...","subject": "..."}
     ]
   }
   `;
@@ -31,16 +32,15 @@ async function AiService(text) {
     contents: prompt
   });
 
-  // Extract text properly
   const rawText = response.candidates[0].content.parts[0].text;
 
-  // Try parsing JSON safely
+
   try {
     return JSON.parse(rawText);
   } catch (err) {
     console.error("Failed to parse AI response:", err);
 
-    // Fallback: try to extract JSON block with regex
+  
     const match = rawText.match(/\{[\s\S]*\}/);
     
     if (match) {
