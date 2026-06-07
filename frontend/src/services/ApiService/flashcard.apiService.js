@@ -12,6 +12,24 @@ const getAllFlashCard = async () => {
    
 };
 
+const generateFlashCard = async (text) => {
+    return await apiService.post('/generate',{text});
+   
+};
+
+const saveFlashCard = async (question, answer, subject) => {
+    return await apiService.post('/',{question, answer, subject});
+   
+};
+
+const deleteFlashCard = async (id) => {
+    return await apiService.delete(`/${id}`);
+};
+
+
 export {
-    getAllFlashCard
+    getAllFlashCard,
+    generateFlashCard,
+    deleteFlashCard,
+    saveFlashCard
 };
