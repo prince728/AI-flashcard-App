@@ -52,7 +52,7 @@ const userLogin = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(400).json({
-                message: "incorrect password"
+                message: "invalid credentials"
             })
         }
 
@@ -70,7 +70,7 @@ const userLogin = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: "user register successfully",
+            message: "User LoggedIn successfully",
             user: {
                 id: user._id,
                 email: user.email,
@@ -128,7 +128,7 @@ const userRegister = async (req, res) => {
         });
 
         return res.status(201).json({
-            message: "user register successfully",
+            message: "User registered successfully",
             user: {
                 id: user._id,
                 email: user.email,
@@ -136,9 +136,13 @@ const userRegister = async (req, res) => {
             }
         })
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
         console.error("Internal server error:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
+
 
 
 }
@@ -152,47 +156,47 @@ const userLogout = async (req, res) => {
 
 
 const userUpdateProfile = async (req, res) => {
-  try {
-    const userId = req.user;
-    const { fullName, email, password } = req.body;
+    try {
+        const userId = req.user;
+        const { fullName, email, password } = req.body;
 
-    
-    if (email) {
-      const existingUser = await userModel.findOne({ email });
-      if (existingUser && existingUser._id.toString() !== userId.toString()) {
-        return res.status(400).json({
-          message: "Email already exists with another account",
+
+        if (email) {
+            const existingUser = await userModel.findOne({ email });
+            if (existingUser && existingUser._id.toString() !== userId.toString()) {
+                return res.status(400).json({
+                    message: "Email already exists with another account",
+                });
+            }
+        }
+
+        const updateData = { fullName, email };
+
+        if (password) {
+            const hashPassword = await bcrypt.hash(password, 10);
+            updateData.password = hashPassword;
+        }
+
+        const user = await userModel.findByIdAndUpdate(userId, updateData, {
+            new: true,
+            runValidators: true,
         });
-      }
+
+        if (!user) {
+            return res.status(404).json({ message: "user not found" });
+        }
+
+        return res.status(200).json({
+            message: "user updated successfully",
+            user: {
+                email: user.email,
+                fullName: user.fullName,
+            },
+        });
+    } catch (error) {
+        console.error("Internal server error:", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-
-    const updateData = { fullName, email };
-
-    if (password) {
-      const hashPassword = await bcrypt.hash(password, 10);
-      updateData.password = hashPassword;
-    }
-
-    const user = await userModel.findByIdAndUpdate(userId, updateData, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: "user not found" });
-    }
-
-    return res.status(200).json({
-      message: "user updated successfully",
-      user: {
-        email: user.email,
-        fullName: user.fullName,
-      },
-    });
-  } catch (error) {
-    console.error("Internal server error:", error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
 };
 
 
@@ -209,6 +213,12 @@ const userDeleteProfile = async (req, res) => {
                 message: "user not found"
             })
         }
+
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict"
+        });
 
         return res.status(200).json({
             message: "user deleted successfully",
