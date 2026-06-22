@@ -66,7 +66,7 @@ function HomePageContent() {
     <div className="min-h-screen bg-gray-50 text-gray-800 relative">
 
 
-      <section className="flex flex-col lg:flex-row items-center justify-between px-10 py-20 bg-gradient-to-r from-blue-100 to-green-100">
+      <section className="flex flex-col lg:flex-row items-center justify-between px-10 py-20 bg-gradient-to-red from-blue-100 to-green-100">
         <div className="lg:w-1/2 space-y-6">
           <h2 className="text-5xl font-extrabold text-gray-900 leading-tight">
             Generate, Study & Save Your Flashcards

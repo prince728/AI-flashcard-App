@@ -152,50 +152,49 @@ const userLogout = async (req, res) => {
 
 
 const userUpdateProfile = async (req, res) => {
+  try {
+    const userId = req.user;
+    const { fullName, email, password } = req.body;
 
-    try {
-        const userId = req.user;
-        const { fullName, email, password } = req.body;
-
-        if (password) {
-            const hashPassword = bcrypt.hash(password, 10);
-        }
-
-        const user = await userModel.findByIdAndUpdate(
-            userId,
-            {
-                email: email,
-                fullName: fullName,
-                password: hashPassword
-            },
-            {
-                new: true,
-                runValidators: true
-            }
-
-        )
-
-        if (!user) {
-            return res.status(404).json({
-                message: "user not found"
-            })
-        }
-
-        return res.status(200).json({
-            message: "user updated successfully",
-            user: {
-                email: user.email,
-                fullName: user.fullName,
-            }
-        })
-
-    } catch (error) {
-        console.error("Internal server error:", error);
-        return res.status(500).json({ message: "Internal server error" });
-
+    
+    if (email) {
+      const existingUser = await userModel.findOne({ email });
+      if (existingUser && existingUser._id.toString() !== userId.toString()) {
+        return res.status(400).json({
+          message: "Email already exists with another account",
+        });
+      }
     }
 
-}
+    const updateData = { fullName, email };
+
+    if (password) {
+      const hashPassword = await bcrypt.hash(password, 10);
+      updateData.password = hashPassword;
+    }
+
+    const user = await userModel.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    return res.status(200).json({
+      message: "user updated successfully",
+      user: {
+        email: user.email,
+        fullName: user.fullName,
+      },
+    });
+  } catch (error) {
+    console.error("Internal server error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 
 
 const userDeleteProfile = async (req, res) => {
