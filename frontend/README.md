@@ -1,31 +1,88 @@
-# 🎨 AI Flashcard App – Frontend
+# 🎨 AI Flashcard Generator Frontend
 
-This is the **frontend client** for the [AI Flashcard App](https://github.com/prince728/AI-flashcard-App).  
-Built with **React, Vite, Tailwind CSS, and Context API**, it provides a clean UI for authentication, flashcard management, and AI‑powered flashcard generation.
+This is the React frontend of the AI Flashcard Generator application.
 
----
-
-## ✨ Features
-- 🔐 **Authentication UI** → Login, signup, profile management.
-- 📝 **Flashcard CRUD** → Create, view, edit, and delete flashcards.
-- 🤖 **AI Integration** → Generate flashcards from text using Gemini AI (via backend API).
-- 🎨 **Responsive Design** → Tailwind CSS for modern styling.
-- ⚡ **Fast Dev Server** → Powered by Vite.
+Built with Vite and Tailwind CSS, it provides a fast and responsive user interface for creating and studying AI-generated flashcards.
 
 ---
 
-## 🛠️ Tech Stack
-- **React 18** (functional components, hooks, context)
-- **Vite** (bundler + dev server)
-- **Tailwind CSS** (utility‑first styling)
-- **Axios** (API calls)
-- **React Router** (navigation)
+## Features
+
+- Modern React 19 application
+- Responsive UI
+- React Router 7
+- Axios API integration
+- Tailwind CSS 4
+- Docker support
 
 ---
 
-## ⚙️ Setup & Installation
+## Tech Stack
 
-### 1. Clone the repository
+- React
+- Vite
+- Tailwind CSS
+- Axios
+- React Router
+
+---
+
+## Installation
+
 ```bash
-git clone https://github.com/prince728/AI-flashcard-App.git
-cd AI-flashcard-App/frontend
+npm install
+```
+
+---
+
+## Run Development Server
+
+```bash
+npm run dev
+```
+
+---
+
+## Build Production Version
+
+```bash
+npm run build
+```
+
+---
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+---
+
+## Docker
+
+Build image
+
+```bash
+docker build -t ai-flashcard-frontend .
+```
+
+Run container
+
+```bash
+docker run -p 5173:5173 ai-flashcard-frontend
+```
+
+---
+
+## Environment Variable
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+---
+
+## Author
+
+Prince Gupta
