@@ -1,16 +1,31 @@
-# React + Vite
+# 🎨 AI Flashcard App – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **frontend client** for the [AI Flashcard App](https://github.com/prince728/AI-flashcard-App).  
+Built with **React, Vite, Tailwind CSS, and Context API**, it provides a clean UI for authentication, flashcard management, and AI‑powered flashcard generation.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
+- 🔐 **Authentication UI** → Login, signup, profile management.
+- 📝 **Flashcard CRUD** → Create, view, edit, and delete flashcards.
+- 🤖 **AI Integration** → Generate flashcards from text using Gemini AI (via backend API).
+- 🎨 **Responsive Design** → Tailwind CSS for modern styling.
+- ⚡ **Fast Dev Server** → Powered by Vite.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
+- **React 18** (functional components, hooks, context)
+- **Vite** (bundler + dev server)
+- **Tailwind CSS** (utility‑first styling)
+- **Axios** (API calls)
+- **React Router** (navigation)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⚙️ Setup & Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/prince728/AI-flashcard-App.git
+cd AI-flashcard-App/frontend
