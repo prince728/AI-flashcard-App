@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const isProduction = process.env.NODE_ENV === "production";
 
 
 const getMe = async (req, res) => {
@@ -64,9 +65,9 @@ const userLogin = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         return res.status(200).json({
@@ -122,9 +123,9 @@ const userRegister = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         return res.status(201).json({
@@ -150,10 +151,10 @@ const userRegister = async (req, res) => {
 
 const userLogout = async (req, res) => {
     res.clearCookie("token", {
-            httpOnly: true,
-            secure: false,
-            sameSite: "none"
-        });
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+    });
 
     return res.status(200).json({ message: "User logged out successfully" })
 }
@@ -220,8 +221,8 @@ const userDeleteProfile = async (req, res) => {
 
         res.clearCookie("token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "none"
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
         });
 
         return res.status(200).json({
