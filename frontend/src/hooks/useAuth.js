@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { getmeApi } from "../services/ApiService/user.apiService";
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
@@ -9,17 +10,16 @@ export default function useAuth() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/getme", {
-          withCredentials: true,
-        });
+        const res = await getmeApi;
 
         setUser(res.data.user);
         setIsLoggedIn(true);
+
       } catch (err) {
         setUser(null);
         setIsLoggedIn(false);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
