@@ -20,7 +20,8 @@ const getMe = async (req, res) => {
             message: "user detail fetched successfully",
             user: {
                 fullName: user.fullName,
-                email: user.email
+                email: user.email,
+                createdAt: user.createdAt
             }
         })
     } catch (error) {
