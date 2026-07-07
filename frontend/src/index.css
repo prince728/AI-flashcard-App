@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+
+@theme {
+  --color-darkBlue: #0B3D91;
+  --color-deepRed: #8B0000;
+  --color-brightOrange: #FF7F11;
+  --color-lightBeige: #F5F5DC;
+  --color-teal: #008080;
+}
+
 html, body, #root {
     width: 100%;
     min-height: 100vh;
@@ -11,3 +20,5 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #f8fafc;
 }
+
+
