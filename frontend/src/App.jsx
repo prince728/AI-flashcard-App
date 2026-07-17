@@ -1,13 +1,16 @@
 import React from 'react'
 import { RouterProvider } from "react-router/dom";
 import router from "./routes/App.routes";
+import { Toaster } from "react-hot-toast";
 
 
 const App = () => {
   return (
-    <div>  
+    <>
+      <Toaster position="top-right" />
       <RouterProvider router={router} />
-    </div>
+    </>
+
   )
 }
 

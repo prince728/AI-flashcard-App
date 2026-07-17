@@ -1,11 +1,11 @@
-// src/pages/SignupPage.jsx
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { registerApi } from "../services/ApiService/user.apiService";
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState("");
 
   const {
     register,
@@ -14,43 +14,85 @@ export default function SignupPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setServerError("");
+
     try {
       await registerApi(data.fullName, data.email, data.password);
       navigate("/");
-    } catch (error) {
-      console.error("Signup failed:", error);
+    } catch (err) {
+      console.error(err);
+
+      setServerError(
+        err.response?.data?.message ||
+          "Unable to create your account. Please try again."
+      );
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <div className="w-full max-w-md bg-gray-900 rounded-2xl shadow-2xl p-8 border border-gray-700">
-        <h2 className="text-3xl font-extrabold text-center text-teal-400 mb-6">
-          Create Your Account
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
+      <div className="w-full max-w-md rounded-2xl border border-gray-700 bg-gray-900 p-8 shadow-2xl">
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl font-bold text-teal-400">
+            Create Your Account
+          </h2>
+
+          <p className="mt-2 text-gray-400">
+            Join us and start generating flashcards.
+          </p>
+        </div>
+
+        {/* Backend Error */}
+        {serverError && (
+          <div className="mb-5 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3">
+            <p className="text-sm font-medium text-red-300">
+              {serverError}
+            </p>
+          </div>
+        )}
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-5"
+        >
           {/* Full Name */}
           <div>
-            <label className="block text-gray-300 font-medium mb-2">
+            <label className="mb-2 block font-medium text-gray-300">
               Full Name
             </label>
+
             <input
               type="text"
               placeholder="Enter your full name"
-              {...register("fullName", { required: "Full name is required" })}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              {...register("fullName", {
+                required: "Full name is required",
+                minLength: {
+                  value: 3,
+                  message: "Name must be at least 3 characters",
+                },
+                onChange: () => setServerError(""),
+              })}
+              className={`w-full rounded-lg border bg-gray-800 px-4 py-3 text-white placeholder-gray-400 outline-none transition ${
+                errors.fullName
+                  ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                  : "border-gray-700 focus:border-teal-500 focus:ring-2 focus:ring-teal-500"
+              }`}
             />
+
             {errors.fullName && (
-              <p className="text-red-400 text-sm mt-1">{errors.fullName.message}</p>
+              <p className="mt-2 text-sm text-red-400">
+                {errors.fullName.message}
+              </p>
             )}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-gray-300 font-medium mb-2">
+            <label className="mb-2 block font-medium text-gray-300">
               Email
             </label>
+
             <input
               type="email"
               placeholder="Enter your email"
@@ -60,19 +102,28 @@ export default function SignupPage() {
                   value: /^[^@]+@[^@]+\.[^@]+$/,
                   message: "Invalid email address",
                 },
+                onChange: () => setServerError(""),
               })}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className={`w-full rounded-lg border bg-gray-800 px-4 py-3 text-white placeholder-gray-400 outline-none transition ${
+                errors.email
+                  ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                  : "border-gray-700 focus:border-teal-500 focus:ring-2 focus:ring-teal-500"
+              }`}
             />
+
             {errors.email && (
-              <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+              <p className="mt-2 text-sm text-red-400">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-gray-300 font-medium mb-2">
+            <label className="mb-2 block font-medium text-gray-300">
               Password
             </label>
+
             <input
               type="password"
               placeholder="Create a password"
@@ -82,30 +133,45 @@ export default function SignupPage() {
                   value: 6,
                   message: "Password must be at least 6 characters",
                 },
+                onChange: () => setServerError(""),
               })}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className={`w-full rounded-lg border bg-gray-800 px-4 py-3 text-white placeholder-gray-400 outline-none transition ${
+                errors.password
+                  ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                  : "border-gray-700 focus:border-teal-500 focus:ring-2 focus:ring-teal-500"
+              }`}
             />
+
             {errors.password && (
-              <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>
+              <p className="mt-2 text-sm text-red-400">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-teal-500 text-white py-2 rounded-lg font-semibold hover:bg-teal-600 transition duration-300 disabled:opacity-50 shadow-lg"
+            className={`w-full rounded-lg py-3 font-semibold transition ${
+              isSubmitting
+                ? "cursor-not-allowed bg-gray-600 text-gray-300"
+                : "bg-teal-500 text-white hover:bg-teal-600"
+            }`}
           >
-            {isSubmitting ? "Signing Up..." : "Sign Up"}
+            {isSubmitting ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
 
-        <p className="text-center text-gray-400 mt-6">
+        <p className="mt-6 text-center text-gray-400">
           Already have an account?{" "}
-          <a href="/login" className="text-teal-400 hover:underline">
+          <Link
+            to="/login"
+            className="font-medium text-teal-400 hover:text-teal-300 hover:underline"
+          >
             Login
-          </a>
+          </Link>
         </p>
+
       </div>
     </div>
   );
