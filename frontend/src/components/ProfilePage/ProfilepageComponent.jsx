@@ -86,7 +86,6 @@ const AdminPage = () => {
           <div className="bg-gray-800 p-6 rounded-xl shadow-md">
             <h3 className="text-lg font-semibold text-gray-300">Total Flashcards</h3>
             <p className="text-2xl font-bold text-teal-400">{flashcardLength}</p>
-            <p className="text-sm text-gray-400">+68 this week</p>
           </div>
 
         </div>
