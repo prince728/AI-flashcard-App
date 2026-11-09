@@ -9,7 +9,20 @@ An AI-powered flashcard generation platform that helps users create, organize, a
 
 ## 📸 Screenshots
 
-> Add screenshots or a demo GIF here
+### Landing Page
+![Landing](screenshots/landing.png)
+
+### Login
+![Login](screenshots/login.png)
+
+### My Flashcards
+![My Flashcards](screenshots/my-flashcards.png)
+
+### Profile Dashboard
+![Profile](screenshots/profile.png)
+
+### About
+![About](screenshots/about.png)
 
 ---
 
