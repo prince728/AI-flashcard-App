@@ -10,7 +10,7 @@ const AllGeneratedFlashCard = ({ totalFlashcards, setTotalFlashcards }) => {
             const cardToSave = totalFlashcards.find((card) => card._id === id);
             if (!cardToSave) return alert("Flashcard not found!");
 
-            // Call API
+            
             const response = await saveFlashCard(
                 cardToSave.question,
                 cardToSave.answer,

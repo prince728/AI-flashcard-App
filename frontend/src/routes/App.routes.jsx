@@ -7,36 +7,39 @@ import AboutPage from "../pages/AboutPage";
 import FlashCardPage from "../pages/FlashCardPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
-
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const router = createBrowserRouter([
-
   {
     path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-    
+    element: <HomePage />
   },
   {
     path: "/about",
-    element: <AboutPage />,
-  },
-  {
-    path: "/flashcards",
-    element: <FlashCardPage />,
+    element: <AboutPage />
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <LoginPage />
   },
   {
     path: "/signup",
-    element: <SignupPage />,
-  }
+    element: <SignupPage />
+  },
+
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/profile",
+        element: <ProfilePage />
+      },
+      {
+        path: "/flashcards",
+        element: <FlashCardPage />
+      },
+    ],
+  },
 ]);
 
 export default router;
-

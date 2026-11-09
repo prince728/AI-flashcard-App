@@ -3,9 +3,12 @@ import heroImage from "../../assets/homepage-hero.png";
 import { generateFlashCard, saveFlashCard } from "../../services/ApiService/flashcard.apiService";
 import AllGeneratedFlashCard from "../FlashcardPage/AllGeneratedFlashCard";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router";
 
 function HomePageContent() {
-  const { loading, setLoading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const { loading, setLoading, isLoggedIn } = useContext(AuthContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [textInput, setTextInput] = useState("");
@@ -21,8 +24,13 @@ function HomePageContent() {
     e.preventDefault();
     if (!textInput.trim()) return;
 
+    if (isLoggedIn === false) {
+      return navigate("/login");
+    }
+
     try {
       setLoading(true);
+
       const response = await generateFlashCard(textInput);
       setGeneratedFlashcards(response.data.flashcards || []);
       handleClosePopup();
