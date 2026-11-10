@@ -1,12 +1,12 @@
 const Redis = require("ioredis");
 
-const redis = new Redis(process.env.REDIS_URL);
+const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
 const LIMIT = 10;
 const WINDOW_SEC = 3600;
 
 const aiRateLimitMiddleware = async (req, res, next) => {
-  const key = `ratelimit:generate:${req.user.id}`;
+  const key = `ratelimit:generate:${req.user}`;
   try {
     const [[, count]] = await redis
       .multi()
