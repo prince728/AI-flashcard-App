@@ -1,14 +1,43 @@
-version: "3.9"
 services:
   backend:
     build: ./backend
+    container_name: flashcard-backend
     ports:
       - "5000:5000"
     env_file:
       - ./backend/.env
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
 
   frontend:
     build: ./frontend
+    container_name: flashcard-frontend
     ports:
       - "5173:5173"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+    restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    container_name: flashcard-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  redis_data:

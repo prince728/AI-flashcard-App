@@ -4,6 +4,7 @@ import { generateFlashCard, saveFlashCard } from "../../services/ApiService/flas
 import AllGeneratedFlashCard from "../FlashcardPage/AllGeneratedFlashCard";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
+import toast from 'react-hot-toast';
 
 function HomePageContent() {
   const navigate = useNavigate();
@@ -20,11 +21,16 @@ function HomePageContent() {
     setTextInput("");
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!textInput.trim()) return;
 
-    if (isLoggedIn === false) {
+    if (!textInput.trim()) {
+      toast.error("Please enter your study material.");
+      return;
+    }
+
+    if (!isLoggedIn) {
       return navigate("/login");
     }
 
@@ -33,13 +39,34 @@ function HomePageContent() {
 
       const response = await generateFlashCard(textInput);
       setGeneratedFlashcards(response.data.flashcards || []);
+      toast.success("Flashcards generated successfully!");
+
       handleClosePopup();
+
     } catch (error) {
       console.error("Error generating flashcards:", error);
+      const status = error.response?.status;
+
+      if (status === 429) {
+        toast.error(
+          error.response?.data?.message ||
+          "Generation limit reached. Please try again later."
+        );
+      } else if (status === 401) {
+        toast.error("Please log in again.");
+        navigate("/login");
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+          "Failed to generate flashcards. Please try again."
+        );
+      }
+
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleSaveAll = async () => {
     try {
